@@ -4,15 +4,15 @@ import healpy as hp
 import pylab as plt 
 import fitsio as fio
 
-theta_file  = 'theory/galaxy_xi/theta.txt'
-wtheta_file = 'theory/galaxy_xi/bin_3_3.txt'
+theta_file  = '../theory/galaxy_xi/theta.txt'
+wtheta_file = '../theory/galaxy_xi/bin_3_3.txt'
 theta  = np.loadtxt(theta_file)
 wtheta = np.loadtxt(wtheta_file)
 
-mock0 = fio.read(f'data/y6_ln_mocks/y6_maglim_con_v2_nside512_nosys_mock0.fits.gz')
+mock0 = fio.read(f'../data/y6_ln_mocks/y6_maglim_con_v2_nside512_nosys_mock0.fits.gz')
 
 #sp_file = '/Users/jackelvinpoole/osu_laptop/DES/sysmaps/y3/sof_depth/y3a2_gold_2_2_1_sof_nside4096_nest_i_depth.fits.gz'
-sp_file = 'data/sysmaps/y6_AIRMASS_WMEAN_i_4096_RING.fits.gz'
+sp_file = '../data/sysmaps/y6_AIRMASS_WMEAN_i_4096_RING.fits.gz'
 sp_hp = hp.read_map(sp_file)
 
 #degrade the SP map and get the pixel centers
@@ -32,7 +32,7 @@ ra_pix,dec_pix = hp.pix2ang(nside, pix, lonlat=True)
 #get the ngal for each mock
 ngal = []
 for imock in range(100):
-	mock = fio.read(f'data/y6_ln_mocks/y6_maglim_con_v2_nside512_nosys_mock{imock}.fits.gz')
+	mock = fio.read(f'../data/y6_ln_mocks/y6_maglim_con_v2_nside512_nosys_mock{imock}.fits.gz')
 	ngal.append(mock['bin3']) 
 ngal = np.array(ngal)
 
@@ -104,9 +104,16 @@ for iedges, sp_edges in enumerate([sp_edges_eq, sp_edges_reg]):
 	n_sp_mocks = n_sp_mocks.T
 	cov_mocks = np.cov(n_sp_mocks,rowvar=False)
 
-	plt.plot(sp_cen, np.sqrt(cov_all.diagonal()), ls='-', marker='.', label='shot noise')
-	plt.plot(sp_cen, np.sqrt(cov_sn.diagonal()),  ls='-', marker='.', label='shot noise + SV')
-	plt.plot(sp_cen, np.sqrt(cov_mocks.diagonal()),  ls='-', marker='.', label='mocks')
+	#get error on mock cov using JK? does this work?
+	jk_covs = [np.cov(np.vstack((n_sp_mocks[:5*ijk],n_sp_mocks[5*(ijk+1):])),rowvar=False) for ijk in range(20)]
+	diags_ms = np.array([(np.sqrt(jk_covs[ijk].diagonal())-np.sqrt(cov_mocks.diagonal())) for ijk in range(20)])
+	diag_err = np.sqrt(np.sum(diags_ms**2.,axis=0)*(20-1)/20)
+
+	#plt.plot(sp_cen, np.sqrt(cov_mocks.diagonal()),  ls='-', marker='.', label='mocks')
+	plt.errorbar(sp_cen, np.sqrt(cov_mocks.diagonal()), diag_err, fmt='.', ls='-', label='mocks', color='g')
+	plt.plot(sp_cen, np.sqrt(cov_all.diagonal()), ls='-', lw=2, marker='.', label='shot noise',color='b')
+	plt.plot(sp_cen, np.sqrt(cov_sn.diagonal()),  ls='-', lw=2., marker='.', label='shot noise + SV',color='orange')
+	
 	plt.legend()
 	plt.axhline(0,color='k',ls='--')
 	plt.xlabel('SOF depth i-band Y3', fontsize=15)
