@@ -1,6 +1,8 @@
 \documentclass[12pt]{article}
  \usepackage[margin=1in]{geometry} 
 \usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{subfigure}
+\usepackage{graphicx}
 
 \usepackage{hyperref}
  
@@ -75,6 +77,34 @@ If there is an actual systematic signal, I think we could just use the real numb
 \begin{equation}
 {\bf {\rm Cov}}(N^{SP}_k, N^{SP}_l) =  \delta_{kl} N^{SP}_{k} + \sum_{\theta} N^{\rm (pix \ pairs)}_{kl}(\theta) {\bar N}^2 w_{\rm true}(\theta) + {(i=j \ \rm term?)}
 \end{equation}
+
+\section{Example on DES Y6 log-normal mocks}
+
+I have taken 100 Lognormal mocks designed to match the Y6 maglim sample and computed the covariance of the 1d airmass correlation from the mocks. I then compare this to the above calculation using the same $w(\theta)$ used to generate the mocks. 
+
+\begin{figure}[h]
+    \includegraphics[width=1.2\linewidth]{../test/cov_eq.png}
+    \caption{}
+    \label{fig:example}
+\end{figure}
+
+\begin{figure}[h]
+    \includegraphics[width=1.2\linewidth]{../test/cov_reg.png}
+    \caption{}
+    \label{fig:example}
+\end{figure}
+
+\begin{figure}[h]
+    \includegraphics[width=0.75\linewidth]{../test/diagonal_eq.png}
+    \caption{}
+    \label{fig:example}
+\end{figure}
+
+\begin{figure}[h]
+    \includegraphics[width=0.75\linewidth]{../test/diagonal_reg.png}
+    \caption{}
+    \label{fig:example}
+\end{figure}
 
 
 

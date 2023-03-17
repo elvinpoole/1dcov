@@ -1,3 +1,10 @@
+"""
+Proof on concept
+
+hopefully will demonstrate on the LN mocks that the 1d covariance 
+from the theory wtheta matches to one from mcoks  
+"""
+
 import numpy as np 
 import treecorr 
 import healpy as hp 
@@ -111,21 +118,25 @@ for iedges, sp_edges in enumerate([sp_edges_eq, sp_edges_reg]):
 
 	#plt.plot(sp_cen, np.sqrt(cov_mocks.diagonal()),  ls='-', marker='.', label='mocks')
 	plt.errorbar(sp_cen, np.sqrt(cov_mocks.diagonal()), diag_err, fmt='.', ls='-', label='mocks', color='g')
-	plt.plot(sp_cen, np.sqrt(cov_all.diagonal()), ls='-', lw=2, marker='.', label='shot noise',color='b')
-	plt.plot(sp_cen, np.sqrt(cov_sn.diagonal()),  ls='-', lw=2., marker='.', label='shot noise + SV',color='orange')
+	plt.plot(sp_cen, np.sqrt(cov_sn.diagonal()),  ls='-', lw=2., marker='.', label='shot noise',color='orange')
+	plt.plot(sp_cen, np.sqrt(cov_all.diagonal()), ls='-', lw=2, marker='.', label='shot noise + SV',color='b')
 	
 	plt.legend()
 	plt.axhline(0,color='k',ls='--')
-	plt.xlabel('SOF depth i-band Y3', fontsize=15)
+	plt.xlabel('AIRMASS i-band DES-Y6', fontsize=15)
 	plt.ylabel(r'$\sigma_{N^{(SP)}}$', fontsize=15)
+	plt.title('SP binning='+label)
 	plt.savefig('diagonal_{0}.png'.format(label))
 	plt.close()
 
 	max_val = np.max([cov_sn,cov_all,cov_mocks])
 	fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(12,4))
 	im = axes[0].imshow(cov_sn,vmin=0,vmax=max_val)
+	axes[0].set_title('shot noise')
 	im = axes[1].imshow(cov_all,vmin=0,vmax=max_val)
+	axes[1].set_title('SP binning='+label + '\n\n'+'shot noise + SV')
 	im = axes[2].imshow(cov_mocks,vmin=0,vmax=max_val)
+	axes[2].set_title('mocks')
 	fig.colorbar(im, ax=axes.ravel().tolist())
 	plt.savefig('cov_{0}.png'.format(label))
 	plt.close()
