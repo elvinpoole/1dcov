@@ -26,7 +26,7 @@
 
 The number of objects in pixel $i$ is $N_i$.
 
-In the absense of clustering, $N_i$ is just a poisson sampling so the the covariance matrix is
+In the absence of clustering, $N_i$ is just a poisson sampling so the the covariance matrix is
 
 
 \begin{equation}
@@ -70,7 +70,7 @@ with clustering it is
 {\bf {\rm Cov}}(N^{SP}_k, N^{SP}_l) =  \delta_{kl} {\bar N} N^{\rm pix}_{k} + \sum_{\theta} N^{\rm (pix \ pairs)}_{kl}(\theta) {\bar N}^2 w_{\rm true}(\theta) + {(i=j \ \rm term?)}
 \end{equation}
 
-where $N_{\rm pix \ pairs}(\theta)$ is the number of pairs of pixels separated by $\theta$ which can be obtained from treecorr. Assuming your $w(\theta)$ and pair counts are in discrete bins.
+where $N_{\rm pix \ pairs}(\theta)$ is the number of pairs of pixels separated by $\theta$ which can be obtained from treecorr or other pair counting codes. Assuming your $w(\theta)$ and pair counts are in discrete bins.
 
 If there is an actual systematic signal, I think we could just use the real number counts as the poisson term
 
@@ -105,6 +105,17 @@ I have taken 100 Lognormal mocks designed to match the Y6 maglim sample and comp
     \caption{}
     \label{fig:example}
 \end{figure}
+
+
+\section{Things to check}
+
+Does the $i=j$ term matter? I'm guessing it will matter more for large pixels 
+
+What are the requirements  wtheta binning, and max/min separation
+
+Can this be extended to multiple maps simultaniously? e.g could we make a data vector that contains the correlations with many SP maps, fit them simultaniously and use this method to compute the large covariance matrix (e.g. 10 SP maps, 10 bins per map, we make a 100x100 covariance)
+
+
 
 
 
