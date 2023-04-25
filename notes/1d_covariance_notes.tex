@@ -95,13 +95,8 @@ I have taken 100 Lognormal mocks designed to match the Y6 maglim sample and comp
 \end{figure}
 
 \begin{figure}[h]
-    \includegraphics[width=0.75\linewidth]{../test/diagonal_eq.png}
-    \caption{}
-    \label{fig:example}
-\end{figure}
-
-\begin{figure}[h]
-    \includegraphics[width=0.75\linewidth]{../test/diagonal_reg.png}
+    \includegraphics[width=0.5\linewidth]{../test/diagonal_eq.png}
+    \includegraphics[width=0.5\linewidth]{../test/diagonal_reg.png}
     \caption{}
     \label{fig:example}
 \end{figure}
@@ -113,11 +108,21 @@ Does the $i=j$ term matter? I'm guessing it will matter more for large pixels
 
 What are the requirements  wtheta binning, and max/min separation
 
+How important is the $k=l$ term (additional to the diagonal) vs the off diagonal terms, in terms of impact on the $\chi^2$.
+
 Can this be extended to multiple maps simultaniously? e.g could we make a data vector that contains the correlations with many SP maps, fit them simultaniously and use this method to compute the large covariance matrix (e.g. 10 SP maps, 10 bins per map, we make a 100x100 covariance)
 
+\section{Multiple SP maps}
 
+What if we have two SP maps and we want to know the covariance between the number counts in a given SP bin for map $\alpha$ vs the counts in another bin in map $\beta$. i.e. ${\bf {\rm Cov}}(N^{SP\alpha}_k, N^{SP\beta}_l)$.
 
+To derive this the first three steps are the same as above. I think the only thing that changes is the shot noise term.
 
+\begin{equation}
+{\bf {\rm Cov}}(N^{SP\alpha}_k, N^{SP\beta}_l) = N^{SP}_{kl} + \sum_{\theta} N^{\rm (pix \ pairs)}_{kl}(\theta) {\bar N}^2 w_{\rm true}(\theta) + {(i=j \ \rm term?)}
+\end{equation}
+
+where $N^{SP}_{kl}$ is the number of objects in both patch $k$ and $l$
 
 \end{document}
 
